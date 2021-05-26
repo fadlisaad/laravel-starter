@@ -490,3 +490,36 @@ if (!function_exists('date_today')) {
         return $str;
     }
 }
+
+/*
+ *
+ * status_label
+ * Show a * if field is required
+ *
+ * ------------------------------------------------------------------------
+ */
+if (!function_exists('status_label')) {
+
+    /**
+     * Prepare the Column Name for Lables.
+     */
+    function status_label($required)
+    {
+        $return_text = '';
+
+        if ($required == 0) {
+            $return_text = '<span class="badge badge-warning">Pending</span>';
+        }
+
+        if ($required == 1) {
+            $return_text = '<span class="badge badge-success">Approved</span>';
+        }
+
+        if ($required == 2) {
+            $return_text = '<span class="badge badge-danger">Rejected</span>';
+        }
+
+        return $return_text;
+    }
+}
+
