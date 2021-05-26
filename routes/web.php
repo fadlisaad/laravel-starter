@@ -139,4 +139,10 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::resource("$module_name", "$controller_name");
     Route::patch("$module_name/{id}/block", ['as' => "$module_name.block", 'uses' => "$controller_name@block", 'middleware' => ['permission:block_users']]);
     Route::patch("$module_name/{id}/unblock", ['as' => "$module_name.unblock", 'uses' => "$controller_name@unblock", 'middleware' => ['permission:block_users']]);
+
+    /* Store route */
+    Route::get("shop", ['as' => "store.index", 'uses' => 'ShopController@index']);
+    Route::get("shop/pending", ['as' => "store.pending", 'uses' => 'ShopController@pending']);
+    Route::get("shop/approve/{id}", ['as' => "store.approve", 'uses' => 'ShopController@approve']);
+    Route::get("shop/reject/{id}", ['as' => "store.reject", 'uses' => 'ShopController@reject']);
 });
