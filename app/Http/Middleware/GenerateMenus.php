@@ -45,6 +45,20 @@ class GenerateMenus
                 'class' => 'c-sidebar-nav-link',
             ]);
 
+            // Shop
+            $menu->add('<i class="c-sidebar-nav-icon fas fa-home"></i> Shop Approval', [
+                'route' => 'backend.store.index',
+                'class' => 'c-sidebar-nav-item',
+            ])
+            ->data([
+                'order'         => 99,
+                'activematches' => 'admin/shop*',
+                'permission'    => [],
+            ])
+            ->link->attr([
+                'class' => 'c-sidebar-nav-link',
+            ]);
+
             // Separator: Access Management
             $menu->add('Management', [
                 'class' => 'c-sidebar-nav-title',

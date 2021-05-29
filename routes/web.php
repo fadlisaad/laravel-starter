@@ -142,7 +142,9 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
 
     /* Store route */
     Route::get("shop", ['as' => "store.index", 'uses' => 'ShopController@index']);
+    Route::get("shop/index_data", ['as' => "store.index_data", 'uses' => 'ShopController@index_data']);
     Route::get("shop/pending", ['as' => "store.pending", 'uses' => 'ShopController@pending']);
     Route::get("shop/approve/{id}", ['as' => "store.approve", 'uses' => 'ShopController@approve']);
     Route::get("shop/reject/{id}", ['as' => "store.reject", 'uses' => 'ShopController@reject']);
+    Route::get("shop/show/{id}", ['as' => "store.show", 'uses' => 'ShopController@show']);
 });

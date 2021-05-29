@@ -7,22 +7,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Shop;
 use Log;
+use Yajra\DataTables\DataTables;
 
 class ShopController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
-        $shop = Shop::all();
+        return view("backend.shop.index");
+    }
 
-        return view(
-            "backend.shop.index",
-            compact('shop')
-        );
+    public function index_data()
+    {
+        $shop = Shop::all();
+        return Datatables::of($shop)
+            ->addColumn('action', function ($data) {
+                return view('backend.includes.shop_actions', compact('data'));
+            })
+            ->editColumn('status', function ($data) {
+                $return_data = $data->status;
+                return $return_data;
+            })
+            ->make(true);
+    }
+
+    public function show($id)
+    {
+        $shop = Shop::find($id);
+        return view("backend.shop.show", compact('shop'));
     }
 
     public function pending()
@@ -42,29 +53,36 @@ class ShopController extends Controller
             'data' => json_encode($data)
         ]);
 
-        foreach ($response['res_list'] as $value) {
+        if($response['result'] == 'ok')
+        {
 
-            Shop::firstOrCreate([
-                "store_name" => $value['store_name'],
-                "lng" => $value['lng'],
-                "lat" => $value['lat'],
-                "address" => $value['address'],
-                "phone_number" => $value['phone_number'],
-                "email" => $value['email'],
-                "description" => $value['description'],
-                "person_in_charge" => $value['person_in_charge'],
-                "status" => $value['status'],
-                "request_time" => $value['request_time'],
-                "response_time" => $value['response_time'],
-                "category_uuid" => $value['category_uuid'],
-                "creator_user_uuid" => $value['creator_user_uuid'],
-                "store_uuid" => $value['store_uuid']
-            ]);
+            foreach ($response['res_list'] as $value) {
 
-            Log::info('Shop'. $value['store_name'].' stored in database.');
-        };
+                Shop::firstOrCreate([
+                    "store_name" => $value['store_name'],
+                    "lng" => $value['lng'],
+                    "lat" => $value['lat'],
+                    "address" => $value['address'],
+                    "phone_number" => $value['phone_number'],
+                    "email" => $value['email'],
+                    "description" => $value['description'],
+                    "person_in_charge" => $value['person_in_charge'],
+                    "status" => $value['status'],
+                    "request_time" => $value['request_time'],
+                    "response_time" => $value['response_time'],
+                    "category_uuid" => $value['category_uuid'],
+                    "creator_user_uuid" => $value['creator_user_uuid'],
+                    "store_uuid" => $value['store_uuid']
+                ]);
 
-        return;
+                Log::info('Shop'. $value['store_name'].' stored in database.');
+            };
+
+            flash('<i class="fas fa-check"></i> Latest pending shop has been retrieved')->success();
+        } else {
+            flash('<i class="fas fa-ban"></i> Failed to retrieve lastest pending shop data')->error();
+        }
+        return redirect()->back();
     }
 
     public function approve($id)
@@ -117,11 +135,14 @@ class ShopController extends Controller
 
         if($response['result'] == 'ok')
         {
-            return 'Shop '. $shop->store_name.' has been approved.';
+            $flash = 'Shop '. $shop->store_name.' has been approved.';
 
         } else {
-            return $response['error_desc'];
+            $flash = $response['error_desc'];
         }
+
+        flash('<i class="fas fa-check"></i> '.$flash)->success();
+        return redirect()->back();
     }
 
     public function reject($id)
@@ -145,10 +166,13 @@ class ShopController extends Controller
 
         if($response['result'] == 'ok')
         {
-            return 'Shop '. $shop->store_name.' has been rejected.';
+            $flash = 'Shop '. $shop->store_name.' has been rejected.';
 
         } else {
-            return $response['error_desc'];
+            $flash = $response['error_desc'];
         }
+
+        flash('<i class="fas fa-check"></i> '.$flash)->success();
+        return redirect()->back();
     }
 }
