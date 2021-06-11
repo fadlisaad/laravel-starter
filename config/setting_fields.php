@@ -23,7 +23,7 @@ return [
                 'label' => 'Footer Text', // you know what label it is
                 'rules' => 'required|min:2', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => '<a href="https://github.com/nasirkhan/laravel-starter/">Built with ♥ from Bangladesh</a>', // default value if you want
+                'value' => '<a href="https://github.com/nasirkhan/laravel-starter/">Built with ♥ by Pacton Technologies</a>', // default value if you want
             ],
             [
                 'type'  => 'checkbox', // input fields type
@@ -55,11 +55,20 @@ return [
 
     ],
     'social' => [
-        'title' => 'Social Profiles',
-        'desc'  => 'Link of all the social profiles.',
+        'title' => 'Social Login/Profiles',
+        'desc'  => 'Setting for social login and link of all the social profiles.',
         'icon'  => 'fas fa-users',
 
         'elements' => [
+            [
+                'type'  => 'checkbox', // input fields type
+                'data'  => 'text', // data type, string, int, boolean
+                'name'  => 'social_login', // unique name for field
+                'label' => 'Enable social login?', // you know what label it is
+                'rules' => 'required', // validation rule of laravel
+                'class' => '', // any class for input
+                'value' => '1', // default value if you want
+            ],
             [
                 'type'  => 'text', // input fields type
                 'data'  => 'string', // data type, string, int, boolean
@@ -139,7 +148,7 @@ return [
                 'label' => 'Meta Keyword', // you know what label it is
                 'rules' => 'required', // validation rule of laravel
                 'class' => '', // any class for input
-                'value' => 'Web Application, Laravel,Laravel starter,Bootstrap,Admin,Template,Open,Source, nasir khan, nasirkhan', // default value if you want
+                'value' => 'Web Application', // default value if you want
             ],
             [
                 'type'  => 'text', // input fields type
@@ -193,6 +202,24 @@ return [
                 'rules' => '', // validation rule of laravel
                 'class' => '', // any class for input
                 'value' => 'UA-36770598-2', // default value if you want
+            ],
+        ],
+
+    ],
+    'pages' => [
+        'title' => 'Pages',
+        'desc'  => 'Edit your privacy policy',
+        'icon'  => 'fas fa-list',
+
+        'elements' => [
+            [
+                'type'  => 'textarea', // input fields type
+                'data'  => 'string', // data type, string, int, boolean
+                'name'  => 'privacy_policy', // unique name for field
+                'label' => 'Privacy Policy', // you know what label it is
+                'rules' => '', // validation rule of laravel
+                'class' => '', // any class for input
+                'value' => '', // default value if you want
             ],
         ],
 

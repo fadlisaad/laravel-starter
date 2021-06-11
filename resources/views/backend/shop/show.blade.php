@@ -6,7 +6,10 @@ Shop Details
 
 @section('breadcrumbs')
 <x-backend-breadcrumbs>
-    <x-backend-breadcrumb-item type="active" icon=''>Shop Details</x-backend-breadcrumb-item>
+    <x-backend-breadcrumb-item route='{{route("backend.store.index")}}' icon='fa fa-home'>
+        Shop
+    </x-backend-breadcrumb-item>
+    <x-backend-breadcrumb-item type="active">Shop Details</x-backend-breadcrumb-item>
 </x-backend-breadcrumbs>
 @endsection
 

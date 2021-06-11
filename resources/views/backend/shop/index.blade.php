@@ -1,12 +1,12 @@
 @extends('backend.layouts.app')
 
 @section('title')
-Pending Approval Shop Listing
+Shop Listing
 @endsection
 
 @section('breadcrumbs')
 <x-backend-breadcrumbs>
-    <x-backend-breadcrumb-item type="active" icon=''>Pending Approval Shop Listing</x-backend-breadcrumb-item>
+    <x-backend-breadcrumb-item type="active" icon=''>Shop Listing</x-backend-breadcrumb-item>
 </x-backend-breadcrumbs>
 @endsection
 
@@ -16,7 +16,7 @@ Pending Approval Shop Listing
         <div class="row">
             <div class="col-8">
                 <h4 class="card-title mb-0">
-                    <i class=""></i> Pending Approval Shop <small class="text-muted">List</small>
+                    <i class=""></i> Shop <small class="text-muted">Listing</small>
                 </h4>
                 <div class="small text-muted">
                     @lang(":module_name Management Dashboard", ['module_name'=>Str::title('Shop')])
@@ -40,10 +40,12 @@ Pending Approval Shop Listing
                 <table id="datatable" class="table table-hover">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Shop Name</th>
                             <th>Person in charge</th>
                             <th>Email</th>
                             <th>Phone No.</th>
+                            <th>Request On</th>
                             <th>Status</th>
                             <th class="text-right">{{ __('labels.backend.action') }}</th>
                         </tr>
@@ -74,13 +76,16 @@ Pending Approval Shop Listing
         responsive: true,
         ajax: '{{ route("backend.store.index_data") }}',
         columns: [
+            {data: 'id', name: 'id'},
             {data: 'store_name', name: 'store_name'},
             {data: 'person_in_charge', name: 'person_in_charge'},
             {data: 'email', name: 'email'},
             {data: 'phone_number', name: 'phone_number'},
+            {data: 'request_time', name: 'request_time'},
             {data: 'status', name: 'status'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
-        ]
+        ],
+        order: [[ 0, "desc" ]]
     });
 
 </script>

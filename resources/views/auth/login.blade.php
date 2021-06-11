@@ -31,7 +31,9 @@
             <div class="col-lg-6 col-md-8">
                 <div class="card bg-secondary border border-soft">
 
+                    @if(setting('social_login') == 1)
                     @include('auth.social_login_buttons')
+                    @endif
 
                     <div class="card-body px-lg-5 py-lg-5">
                         <div class="text-center text-muted mb-4">

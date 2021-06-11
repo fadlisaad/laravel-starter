@@ -4,57 +4,57 @@
 
 @section('content')
 
-<section class="section-header pb-6 pb-lg-10 bg-primary text-white">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-10 text-center">
-                <h1 class="display-1 mb-4">{{app_name()}}</h1>
-                <p class="lead text-muted">
-                    {!! setting('meta_description') !!}
-                </p>
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="section section-lg bg-soft">
 
-                @include('frontend.includes.messages')
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1">
+            <h1>Immersive shopping experiences purpose-built for<span style="color: red;"> communities </span></h1>
+            <h2>Malaysia’s first video shopping app</h2>
+            </div>
+            <div class="col-lg-6 order-2 order-lg-2 hero-img d-flex justify-content-center">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/nVbyGhH75NI?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </div>
-    <div class="pattern bottom"></div>
-</section>
 
-<section class="section section-ld">
+</section><!-- End Hero -->
+
+<section class="section pb-5">
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                <h2 class="mb-4 mb-lg-5">Backend pages</h2>
+            <div class="col-6 justify-content-center">
+                <img src="{{ asset('frontend/img/cartsitu/Asset 6.png') }}" height="100px">
             </div>
-            <div class="col-6 col-sm-4 mb-5">
-                <a href="#" class="page-preview scale-up-hover-2">
-                    <img class="shadow-lg rounded scale" src="https://user-images.githubusercontent.com/396987/88489727-f3889200-cfb7-11ea-819f-dc9a52bc8d82.jpg"
-                        alt="Landing page preview">
-                    <div class="text-center show-on-hover">
-                        <h6 class="m-0 text-center text-white">Dashboard<i
-                                class="fas fa-external-link-alt ml-2"></i></h6>
-                    </div>
-                </a>
+            <div class="col-6 justify-content-center">
+                <h2 class="mb-3 mb-lg-4 text-black">
+                    About Us
+                </h2>
+                <p class="text-gray">
+                    We're a Video based Social Commerce App that supports businesses to market their products using <span style="color: #BA1E2D;">video content</span> to promote and sell their products or services in a <span style="color: #ED5A29;"> FUN </span>and <span style = "color: #F3901E;"> EFFECTIVE </span>way
+                </p>
             </div>
-            <div class="col-6 col-sm-4 mb-5">
-                <a href="#" class="page-preview scale-up-hover-2">
-                    <img class="shadow-lg rounded scale" src="https://user-images.githubusercontent.com/396987/88519250-a0dcc380-d013-11ea-9dc5-9d731af611f1.jpg"
-                        alt="About page preview">
-                    <div class="text-center show-on-hover">
-                        <h6 class="m-0 text-center text-white">Posts List <i
-                                class="fas fa-external-link-alt ml-2"></i></h6>
-                    </div>
-                </a>
+        </div>
+    </div>
+</section>
+
+<section class="section section-lg pb-5 bg-soft">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 text-gray text-center mb-4 mb-lg-5">
+                <h2 class="mb-3 mb-lg-4 text-black">
+                    Download
+                </h2>
+                <p class="lead text-gray mb-4">
+                    Get our app now from the Google Play Store!
+                </p>
             </div>
-            <div class="col-6 col-sm-4 mb-5">
-                <a href="#" class="page-preview scale-up-hover-2">
-                    <img class="shadow-lg rounded scale" src="https://user-images.githubusercontent.com/396987/88519360-d1bcf880-d013-11ea-9f6c-b5d33912057f.jpg"
-                        alt="Pricing page preview">
-                    <div class="text-center show-on-hover">
-                        <h6 class="m-0 text-center text-white">Posts Edit <i
-                                class="fas fa-external-link-alt ml-2"></i></h6>
-                    </div>
-                </a>
+            <div class="col-12 col-md-6 text-center">
+                <p>
+                    <img src="{{ asset('frontend/img/google.png') }}" height="48px">
+                    <img src="{{ asset('frontend/img/apple.png') }}" height="54px">
+                </p>
             </div>
         </div>
     </div>

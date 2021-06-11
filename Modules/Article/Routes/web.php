@@ -14,7 +14,7 @@ Route::group(['namespace' => '\Modules\Article\Http\Controllers\Frontend', 'as' 
      *
      * ---------------------------------------------------------------------
      */
-    $module_name = 'posts';
+    $module_name = 'blog';
     $controller_name = 'PostsController';
     Route::get("$module_name", ['as' => "$module_name.index", 'uses' => "$controller_name@index"]);
     Route::get("$module_name/{id}/{slug?}", ['as' => "$module_name.show", 'uses' => "$controller_name@show"]);

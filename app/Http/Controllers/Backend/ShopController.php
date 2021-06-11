@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Shop;
 use Log;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class ShopController extends Controller
 {
@@ -18,13 +19,18 @@ class ShopController extends Controller
 
     public function index_data()
     {
-        $shop = Shop::all();
+        $shop = Shop::orderBy('id', 'desc')->get();
         return Datatables::of($shop)
             ->addColumn('action', function ($data) {
                 return view('backend.includes.shop_actions', compact('data'));
             })
             ->editColumn('status', function ($data) {
-                $return_data = $data->status;
+                $return_data = status_label($data->status);
+                return $return_data;
+            })
+            ->escapeColumns('status')
+            ->editColumn('request_time', function ($data) {
+                $return_data = $data->request_time->diffForHumans();
                 return $return_data;
             })
             ->make(true);
@@ -36,11 +42,60 @@ class ShopController extends Controller
         return view("backend.shop.show", compact('shop'));
     }
 
+    public function enabled()
+    {
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "offset" => 0,
+            "page_size" => 30,
+            "requested_field" => "*",
+            "filter" => [
+                "status" => "1"
+            ]
+        ];
+
+        $response = Http::get(env('API_URL').'get_queue_list', [
+            'data' => json_encode($data)
+        ]);
+
+        if($response['result'] == 'ok')
+        {
+
+            foreach ($response['res_list'] as $value) {
+
+                Shop::firstOrCreate([
+                    "store_name" => $value['store_name'],
+                    "lng" => $value['lng'],
+                    "lat" => $value['lat'],
+                    "address" => $value['address'],
+                    "phone_number" => $value['phone_number'],
+                    "email" => $value['email'],
+                    "description" => $value['description'],
+                    "person_in_charge" => $value['person_in_charge'],
+                    "status" => $value['status'],
+                    "request_time" => $value['request_time'],
+                    "response_time" => $value['response_time'],
+                    "category_uuid" => $value['category_uuid'],
+                    "creator_user_uuid" => $value['creator_user_uuid'],
+                    "store_uuid" => $value['store_uuid']
+                ]);
+
+                Log::info('Shop'. $value['store_name'].' stored in database.');
+            };
+
+            flash('<i class="fas fa-check"></i> Latest enabled shop has been retrieved')->success();
+        } else {
+            flash('<i class="fas fa-ban"></i> Failed to retrieve enabled shop data')->error();
+        }
+        return redirect()->back();
+    }
+
     public function pending()
     {
         $data = [
-            "user_name" => "b4f9b332-3738-11eb-b138-efd51cb920f0",
-            "token" => "77104283",
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
             "offset" => 0,
             "page_size" => 30,
             "requested_field" => "*",
@@ -49,7 +104,7 @@ class ShopController extends Controller
             ]
         ];
 
-        $response = Http::get('https://culick.com/store_reg/get_queue_list', [
+        $response = Http::get(env('API_URL').'get_queue_list', [
             'data' => json_encode($data)
         ]);
 
@@ -80,7 +135,7 @@ class ShopController extends Controller
 
             flash('<i class="fas fa-check"></i> Latest pending shop has been retrieved')->success();
         } else {
-            flash('<i class="fas fa-ban"></i> Failed to retrieve lastest pending shop data')->error();
+            flash('<i class="fas fa-ban"></i> Failed to retrieve latest pending shop data. API error response: '.$response['error_desc'])->error();
         }
         return redirect()->back();
     }
@@ -90,8 +145,8 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => "b4f9b332-3738-11eb-b138-efd51cb920f0",
-            "token" => "77104283",
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
             "creator_user_uuid" => $shop->creator_user_uuid,
             "currency" => 'MYR',
             "requested_field" => "*",
@@ -124,7 +179,7 @@ class ShopController extends Controller
             ]
         ];
 
-        $response = Http::get('https://culick.com/store_reg/accept_last_request', [
+        $response = Http::get(env('API_URL').'accept_last_request', [
             'data' => json_encode($data)
         ]);
         
@@ -150,12 +205,12 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => "b4f9b332-3738-11eb-b138-efd51cb920f0",
-            "token" => "77104283",
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
             "creator_user_uuid" => $shop->creator_user_uuid
         ];
 
-        $response = Http::get('https://culick.com/store_reg/reject_last_request', [
+        $response = Http::get(env('API_URL').'reject_last_request', [
             'data' => json_encode($data)
         ]);
         

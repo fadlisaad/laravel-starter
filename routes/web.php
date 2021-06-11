@@ -29,7 +29,7 @@ Route::get('language/{language}', 'LanguageController@switch')->name('language.s
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
     Route::get('/', 'FrontendController@index')->name('index');
     Route::get('home', 'FrontendController@index')->name('home');
-    Route::get('privacy', 'FrontendController@privacy')->name('privacy');
+    Route::get('privacy-policy', 'FrontendController@privacy')->name('privacy');
     Route::get('terms', 'FrontendController@terms')->name('terms');
 
     Route::group(['middleware' => ['auth']], function () {
@@ -144,6 +144,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get("shop", ['as' => "store.index", 'uses' => 'ShopController@index']);
     Route::get("shop/index_data", ['as' => "store.index_data", 'uses' => 'ShopController@index_data']);
     Route::get("shop/pending", ['as' => "store.pending", 'uses' => 'ShopController@pending']);
+    Route::get("shop/enabled", ['as' => "store.enabled", 'uses' => 'ShopController@enabled']);
     Route::get("shop/approve/{id}", ['as' => "store.approve", 'uses' => 'ShopController@approve']);
     Route::get("shop/reject/{id}", ['as' => "store.reject", 'uses' => 'ShopController@reject']);
     Route::get("shop/show/{id}", ['as' => "store.show", 'uses' => 'ShopController@show']);

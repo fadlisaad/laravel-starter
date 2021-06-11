@@ -4,36 +4,32 @@
 
 @section('content')
 
-<section class="section-header bg-primary text-white pb-7 pb-lg-11">
+<section class="section-header bg-gradient text-white pb-7 pb-lg-11">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 text-center">
                 <h1 class="display-2 mb-4">
-                    The Super Articles
+                    Blog
                 </h1>
                 <p class="lead">
-                    We publish articles on a number of topics. We encourage you to read our posts and let us know your feedback. It would be really help us to move forward.
+                    Latest blog from CartSitu
                 </p>
-
-                @include('frontend.includes.messages')
             </div>
         </div>
     </div>
-    <div class="pattern bottom"></div>
 </section>
 
-@if(count($$module_name))
 <section class="section section-lg line-bottom-light">
     <div class="container mt-n7 mt-lg-n12 z-2">
+        @if(count($$module_name))
         <div class="row">
             @php
             $$module_name_singular = $$module_name->shift();
 
             $details_url = route("frontend.$module_name.show",[encode_id($$module_name_singular->id), $$module_name_singular->slug]);
             @endphp
-
             <div class="col-lg-12 mb-5">
-                <div class="card bg-white border-light shadow-soft flex-md-row no-gutters p-4">
+                <div class="card bg-white border-light shadow-soft no-gutters p-4">
                     <a href="{{$details_url}}" class="col-md-6 col-lg-6">
                         <img src="{{$$module_name_singular->featured_image}}" alt="" class="card-img-top">
                     </a>
@@ -80,12 +76,19 @@
             </div>
             @endforeach
         </div>
-
         <div class="d-flex justify-content-center w-100 mt-3">
             {{$$module_name->links()}}
         </div>
+        @else
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    No content at the moment. Stay tune for more!
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </section>
-@endif
 
 @endsection
