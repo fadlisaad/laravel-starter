@@ -14,6 +14,10 @@
 // Autho Routes
 require __DIR__.'/auth.php';
 
+if (env('APP_ENV') === 'production') {
+    URL::forceSchema('https');
+}
+
 // Atom/ RSS Feed Routes
 Route::feeds();
 
