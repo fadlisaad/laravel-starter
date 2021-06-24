@@ -152,4 +152,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get("shop/report/sale", ['as' => "store.report.sale", 'uses' => 'ShopController@index_sales']);
     Route::get("shop/index_sales_data", ['as' => "store.index_sales_data", 'uses' => 'ShopController@index_sales_data']);
 
+    /* Product route */
+    Route::get("shop/product/{product_uuid}", ['as' => "product.show", 'uses' => 'ShopController@product_details']);
+
 });

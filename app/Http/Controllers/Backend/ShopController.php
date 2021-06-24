@@ -266,32 +266,6 @@ class ShopController extends Controller
     {
         $shop = Shop::find($id);
 
-        /*
-        Note: closed: Customer paid the order and seller should make the order ready to send.
-        order_status_array:
-            shipment_submitted: Order is ready to send by seller and the system booked the shipping.
-            shipped_out: Seller informed the system that the order is shipped out.
-            arrival_claimed: Customer received the order but there is a problem in the received order and he or she claimed.
-            arrival_confirmed: Customer received the order and confirmed that the order is OK.
-            seller_paid: The system paid to seller (Future Feature)
-        start_date and end_date parameter are both in 'YYYY-mm-dd' format. These are the time of user payment.
-        {
-           "user_name":"b4f9b332-3738-11eb-b138-efd51cb920f0",
-           "token":"77104283",
-           "store_uuid":"7534c240-2424-11eb-8061-7be48edcf165",
-           "order_status_array":[
-              "closed",
-              "arrival_confirmed",
-              "shipped_out",
-              "shipment_submitted",
-              "seller_paid",
-              "arrival_claimed"
-           ],
-           "start_date":"2021-01-01",
-           "end_date":"2021-05-31"
-        }
-        */
-
         $data = [
             "user_name" => env('API_USERNAME'),
             "token" => env('API_PASSWORD'),
@@ -342,6 +316,52 @@ class ShopController extends Controller
         ];
 
         $response = Http::get(env('API_URL').'store/get_product_list', [
+            'data' => json_encode($data)
+        ]);
+
+        if($response['result'] == 'ok')
+        {
+            return $response;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function product_details($product_uuid)
+    {
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "product_uuid" => $product_uuid
+        ];
+
+        $response = Http::get(env('API_URL').'store/get_product', [
+            'data' => json_encode($data)
+        ]);
+
+        if($response['result'] == 'ok')
+        {
+            $product = $response;
+            $review = $this->product_review($product_uuid);
+            return view("backend.shop.product", compact('product','review'));
+        }
+        else
+        {
+            return back()->withError('Cannot retrive product details');
+        }
+    }
+
+    public function product_review($product_uuid)
+    {
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "product_uuid" => $product_uuid
+        ];
+
+        $response = Http::get(env('API_URL').'product_review/get_list', [
             'data' => json_encode($data)
         ]);
 

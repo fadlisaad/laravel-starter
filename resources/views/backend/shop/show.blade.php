@@ -124,16 +124,41 @@ Shop Details
                         Product List
                     </div>
                     <div class="card-body">
-                        @if($products)
-                        <dl>
-                        @foreach ($products as $product)
-                            <dt>{!! $product['uuid'] !!}</dt>
-                            <dd>{!! $product['title'] !!}</dd>
-                        @endforeach
-                        </dl>
-                        @else
-                        No product list
-                        @endif
+                        <div class="table-responsive">
+                            <table class="table table-responsive-sm table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <strong>
+                                                #
+                                            </strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>
+                                                Name
+                                            </strong>
+                                        </th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @if($products)
+                                @php $i=1; @endphp
+                                @foreach ($products['res_list'] as $product)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{!! $product['title'] !!}</td>
+                                    <td>
+                                        <a href="{{ route('backend.product.show',$product['uuid']) }}" class="btn btn-primary btn-sm">View</a></td>
+                                </tr>
+                                @endforeach
+                                @else
+                                <tr>
+                                    <td colspan="3">No product list</td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
