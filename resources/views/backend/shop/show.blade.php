@@ -39,83 +39,102 @@ Shop Details
 
         <div class="row mt-2">
             <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-responsive-sm table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    <strong>
-                                        Date
-                                    </strong>
-                                </th>
-                                <th scope="col">
-                                    <strong>
-                                        Amount (RM)
-                                    </strong>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($sales['res_list'] as $value)
-                            <tr>
-                                <td>
-                                    {{ $value['date'] }}
-                                </td>
-                                <td>
-                                    {{ $value['daily_sells'] }}
-                                </td>
-                            </tr>
-                            @endforeach
-                            <tfoot>
-                                <tr>
-                                    <td>
-                                        <strong>Total</strong>
-                                    </td>
-                                    <td>
-                                        <strong>{{ $sales['total_sells'] }}</strong>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </tbody>
-                    </table>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-cube"></i>
+                        Sales Details for {{ $shop->store_name }}
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive-sm table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <strong>
+                                                Date
+                                            </strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>
+                                                Amount (RM)
+                                            </strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($sales)
+                                    @foreach ($sales['res_list'] as $value)
+                                    <tr>
+                                        <td>
+                                            {{ $value['date'] }}
+                                        </td>
+                                        <td>
+                                            {{ $value['daily_sells'] }}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    <tfoot>
+                                        <tr>
+                                            <td>
+                                                <strong>Total</strong>
+                                            </td>
+                                            <td>
+                                                <strong>{{ $sales['total_sells'] }}</strong>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                    @else
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>No sales data available</strong>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="alert alert-info">Note: Data is correct as of today</div>
+                    </div>
                 </div>
-                <div class="alert alert-info">Note: Data is correct as of today</div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-responsive-sm table-hover table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    <strong>
-                                        Name
-                                    </strong>
-                                </th>
-                                <th scope="col">
-                                    <strong>
-                                        Value
-                                    </strong>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($shop->getAttributes() as $key => $value)
-                            <tr>
-                                <td>
-                                    <strong>
-                                        {{ label_case($key) }}
-                                    </strong>
-                                </td>
-                                <td>
-                                    {!! $value !!}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-cube"></i>
+                        Shop Details
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                        @foreach ($shop->getAttributes() as $key => $value)
+                            <dt>{{ label_case($key) }}</dt>
+                            <dd>{!! $value !!}</dd>
+                        @endforeach
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-cube"></i>
+                        Product List
+                    </div>
+                    <div class="card-body">
+                        @if($products)
+                        <dl>
+                        @foreach ($products as $product)
+                            <dt>{!! $product['uuid'] !!}</dt>
+                            <dd>{!! $product['title'] !!}</dd>
+                        @endforeach
+                        </dl>
+                        @else
+                        No product list
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

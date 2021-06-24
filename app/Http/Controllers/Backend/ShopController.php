@@ -69,7 +69,8 @@ class ShopController extends Controller
     {
         $shop = Shop::find($id);
         $sales = $this->sales($id);
-        return view("backend.shop.show", compact('shop', 'sales'));
+        $products = $this->product_list($id);
+        return view("backend.shop.show", compact('shop', 'sales', 'products'));
     }
 
     public function enabled()
@@ -294,7 +295,7 @@ class ShopController extends Controller
         $data = [
             "user_name" => env('API_USERNAME'),
             "token" => env('API_PASSWORD'),
-            "store_uuid" => $shop->uuid,
+            "store_uuid" => $shop->store_uuid,
             "order_status_array" => [
                 "closed",
                 "arrival_confirmed",
@@ -311,16 +312,47 @@ class ShopController extends Controller
             'data' => json_encode($data)
         ]);
 
-        foreach($response['res_list'] as $data)
+        if($response['result'] == 'ok')
         {
-            Sale::firstOrCreate([
-                'shop_id' => $id,
-                'sales_date' => $data['date'],
-                'sales_amount' => $data['daily_sells']
-            ]);
-        }
+            foreach($response['res_list'] as $data)
+            {
+                Sale::firstOrCreate([
+                    'shop_id' => $id,
+                    'sales_date' => $data['date'],
+                    'sales_amount' => $data['daily_sells']
+                ]);
+            }
 
-        return $response;
+            return $response;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function product_list($id)
+    {
+        $shop = Shop::find($id);
+
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "store_uuid" => $shop->store_uuid
+        ];
+
+        $response = Http::get(env('API_URL').'store/get_product_list', [
+            'data' => json_encode($data)
+        ]);
+
+        if($response['result'] == 'ok')
+        {
+            return $response['res_list'];
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function add_manager(Request $request)
