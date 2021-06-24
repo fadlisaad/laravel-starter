@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sale;
+use App\Models\Shop;
 
 class BackendController extends Controller
 {
@@ -13,6 +15,8 @@ class BackendController extends Controller
      */
     public function index()
     {
-        return view('backend.index');
+        $sales = Sale::all();
+        $shops = Shop::all();
+        return view('backend.index', compact('sales', 'shops'));
     }
 }

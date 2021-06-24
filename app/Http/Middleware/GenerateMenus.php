@@ -37,7 +37,7 @@ class GenerateMenus
                 'class' => 'c-sidebar-nav-item',
             ])
             ->data([
-                'order'         => 99,
+                'order'         => 10,
                 'activematches' => 'admin/notifications*',
                 'permission'    => [],
             ])
@@ -45,18 +45,50 @@ class GenerateMenus
                 'class' => 'c-sidebar-nav-link',
             ]);
 
+            // Separator: Shop
+            $menu->add('Merchant', [
+                'class' => 'c-sidebar-nav-title',
+            ])
+            ->data([
+                'order'         => 11,
+                'permission'    => [],
+            ]);
+
             // Shop
-            $menu->add('<i class="c-sidebar-nav-icon fas fa-home"></i> Shop Approval', [
+            $menu->add('<i class="c-sidebar-nav-icon fas fa-home"></i> Shop Listing', [
                 'route' => 'backend.store.index',
                 'class' => 'c-sidebar-nav-item',
             ])
             ->data([
-                'order'         => 99,
-                'activematches' => 'admin/shop*',
+                'order'         => 12,
+                'activematches' => 'admin/shop',
                 'permission'    => [],
             ])
             ->link->attr([
                 'class' => 'c-sidebar-nav-link',
+            ]);
+
+            // Shop sales
+            $menu->add('<i class="c-sidebar-nav-icon fas fa-chart-line"></i> Shop Sales', [
+                'route' => 'backend.store.report.sale',
+                'class' => 'c-sidebar-nav-item',
+            ])
+            ->data([
+                'order'         => 13,
+                'activematches' => 'admin/shop/report*',
+                'permission'    => [],
+            ])
+            ->link->attr([
+                'class' => 'c-sidebar-nav-link',
+            ]);
+
+            // Separator: Shop
+            $menu->add('Frontend', [
+                'class' => 'c-sidebar-nav-title',
+            ])
+            ->data([
+                'order'         => 14,
+                'permission'    => ['edit_settings', 'view_backups', 'view_users', 'view_roles', 'view_logs'],
             ]);
 
             // Separator: Access Management

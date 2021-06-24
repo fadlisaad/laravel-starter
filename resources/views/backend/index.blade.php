@@ -36,11 +36,11 @@
     <div class="col-sm-6 col-lg-3">
         <div class="card">
             <div class="card-body">
-                <div class="text-value-lg">89.9%</div>
-                <div>Widget title</div>
+                <div class="text-value-lg">RM {{ number_format($sales->sum('sales_amount'),2) }}</div>
+                <div>Total Sales Amount</div>
                 <div class="progress progress-xs my-2">
                     <div class="progress-bar bg-gradient-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small class="text-muted">Widget helper text</small>
+                </div><small class="text-muted">As of {{ date_today() }}</small>
             </div>
         </div>
     </div>
@@ -48,11 +48,11 @@
     <div class="col-sm-6 col-lg-3">
         <div class="card">
             <div class="card-body">
-                <div class="text-value-lg">12.124</div>
-                <div>Widget title</div>
+                <div class="text-value-lg">{{ $shops->count('id') }}</div>
+                <div>Total Merchant</div>
                 <div class="progress progress-xs my-2">
                     <div class="progress-bar bg-gradient-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small class="text-muted">Widget helper text</small>
+                </div><small class="text-muted">Local/International merchant</small>
             </div>
         </div>
     </div>

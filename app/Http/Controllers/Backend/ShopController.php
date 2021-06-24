@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Shop;
+use App\Models\Sale;
 use Log;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -36,10 +37,39 @@ class ShopController extends Controller
             ->make(true);
     }
 
+    public function index_sales()
+    {
+        return view("backend.shop.index-sales");
+    }
+
+    public function index_sales_data()
+    {
+        $sales = Sale::all();
+  
+        return Datatables::of($sales)
+            ->editColumn('shop_name', function ($data) {
+                return $data->shop->store_name;
+            })
+            ->editColumn('daily_sales', function ($data) {
+                return number_format($data->sales_amount,2);
+            })
+            ->editColumn('total_sales', function ($data) {
+                return number_format($data->sales_amount,2);
+            })
+            ->editColumn('date', function ($data) {
+                return $data->sales_date;
+            })
+            ->addColumn('action', function ($data) {
+                return view('backend.includes.shop_sales_actions', compact('data'));
+            })
+            ->make(true);
+    }
+
     public function show($id)
     {
         $shop = Shop::find($id);
-        return view("backend.shop.show", compact('shop'));
+        $sales = $this->sales($id);
+        return view("backend.shop.show", compact('shop', 'sales'));
     }
 
     public function enabled()
@@ -55,7 +85,7 @@ class ShopController extends Controller
             ]
         ];
 
-        $response = Http::get(env('API_URL').'get_queue_list', [
+        $response = Http::get(env('API_URL').'store_reg/get_queue_list', [
             'data' => json_encode($data)
         ]);
 
@@ -104,7 +134,7 @@ class ShopController extends Controller
             ]
         ];
 
-        $response = Http::get(env('API_URL').'get_queue_list', [
+        $response = Http::get(env('API_URL').'store_reg/get_queue_list', [
             'data' => json_encode($data)
         ]);
 
@@ -179,7 +209,7 @@ class ShopController extends Controller
             ]
         ];
 
-        $response = Http::get(env('API_URL').'accept_last_request', [
+        $response = Http::get(env('API_URL').'store_reg/accept_last_request', [
             'data' => json_encode($data)
         ]);
         
@@ -210,7 +240,7 @@ class ShopController extends Controller
             "creator_user_uuid" => $shop->creator_user_uuid
         ];
 
-        $response = Http::get(env('API_URL').'reject_last_request', [
+        $response = Http::get(env('API_URL').'store_reg/reject_last_request', [
             'data' => json_encode($data)
         ]);
         
@@ -222,6 +252,101 @@ class ShopController extends Controller
         if($response['result'] == 'ok')
         {
             $flash = 'Shop '. $shop->store_name.' has been rejected.';
+
+        } else {
+            $flash = $response['error_desc'];
+        }
+
+        flash('<i class="fas fa-check"></i> '.$flash)->success();
+        return redirect()->back();
+    }
+
+    public function sales($id)
+    {
+        $shop = Shop::find($id);
+
+        /*
+        Note: closed: Customer paid the order and seller should make the order ready to send.
+        order_status_array:
+            shipment_submitted: Order is ready to send by seller and the system booked the shipping.
+            shipped_out: Seller informed the system that the order is shipped out.
+            arrival_claimed: Customer received the order but there is a problem in the received order and he or she claimed.
+            arrival_confirmed: Customer received the order and confirmed that the order is OK.
+            seller_paid: The system paid to seller (Future Feature)
+        start_date and end_date parameter are both in 'YYYY-mm-dd' format. These are the time of user payment.
+        {
+           "user_name":"b4f9b332-3738-11eb-b138-efd51cb920f0",
+           "token":"77104283",
+           "store_uuid":"7534c240-2424-11eb-8061-7be48edcf165",
+           "order_status_array":[
+              "closed",
+              "arrival_confirmed",
+              "shipped_out",
+              "shipment_submitted",
+              "seller_paid",
+              "arrival_claimed"
+           ],
+           "start_date":"2021-01-01",
+           "end_date":"2021-05-31"
+        }
+        */
+
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "store_uuid" => $shop->uuid,
+            "order_status_array" => [
+                "closed",
+                "arrival_confirmed",
+                "shipped_out",
+                "shipment_submitted",
+                "seller_paid",
+                "arrival_claimed"
+            ],
+            "start_date" => "2021-01-01",
+            "end_date" => Carbon::now()->format('Y-m-d')
+        ];
+
+        $response = Http::get(env('API_URL').'purchase/get_store_sales_info', [
+            'data' => json_encode($data)
+        ]);
+
+        foreach($response['res_list'] as $data)
+        {
+            Sale::firstOrCreate([
+                'shop_id' => $id,
+                'sales_date' => $data['date'],
+                'sales_amount' => $data['daily_sells']
+            ]);
+        }
+
+        return $response;
+    }
+
+    public function add_manager(Request $request)
+    {
+        $shop_id = $request->get('shop_id');
+        $shop = Shop::find($shop_id);
+
+        $data = [
+            "user_name" => env('API_USERNAME'),
+            "token" => env('API_PASSWORD'),
+            "shop_uuid" => $shop->shop_uuid,
+            "user_uuid" => $shop->creator_user_uuid,
+            "access" => 2
+        ];
+
+        $response = Http::post(env('API_URL').'add_store_manager', [
+            'data' => json_encode($data)
+        ]);
+        
+        $shop->update();
+
+        Log::info('Shop '. $shop->store_name.' manager has been updated.');
+
+        if($response['result'] == 'ok')
+        {
+            $flash = 'Shop '. $shop->store_name.' manager cannot be updated.';
 
         } else {
             $flash = $response['error_desc'];

@@ -37,7 +37,53 @@ Shop Details
         </div>
         <!--/.row-->
 
-        <div class="row mt-4">
+        <div class="row mt-2">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-responsive-sm table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <strong>
+                                        Date
+                                    </strong>
+                                </th>
+                                <th scope="col">
+                                    <strong>
+                                        Amount (RM)
+                                    </strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($sales['res_list'] as $value)
+                            <tr>
+                                <td>
+                                    {{ $value['date'] }}
+                                </td>
+                                <td>
+                                    {{ $value['daily_sells'] }}
+                                </td>
+                            </tr>
+                            @endforeach
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td>
+                                        <strong>{{ $sales['total_sells'] }}</strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-info">Note: Data is correct as of today</div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col">
                 <div class="table-responsive">
                     <table class="table table-responsive-sm table-hover table-bordered">
@@ -73,6 +119,7 @@ Shop Details
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 @endsection
