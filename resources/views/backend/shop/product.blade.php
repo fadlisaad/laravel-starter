@@ -52,7 +52,7 @@ Product Details
                                     @php $image = $detail['value'] @endphp
                                     @endif
                                 @endforeach
-                                <img src="http://culick.com/fm/download?user_name={{ env('API_USERNAME') }}&token={{ env('API_PASSWORD') }}&uuid={{ $image }}" class="img-fluid img-thumbnail">
+                                <img src="http://culick.com/fm/download?user_name={{ env('API_USERNAME_2') }}&token={{ env('API_PASSWORD') }}&uuid={{ $image }}" class="img-fluid img-thumbnail">
                             </div>
                             <div class="col-3">
                                 <dl>
@@ -209,7 +209,7 @@ Product Details
                             @foreach($review as $data)
                             @php
                                 $user_data = [
-                                    "user_name" => env('API_USERNAME'),
+                                    "user_name" => env('API_USERNAME_2'),
                                     "token" => env('API_PASSWORD'),
                                     "user_uuid" => $data['user_uuid']
                                 ];
@@ -218,7 +218,7 @@ Product Details
                                     'data' => json_encode($user_data)
                                 ]);
                             @endphp
-                            <div class="d-flex flex-row"> <img src="http://culick.com/fm/download?user_name={{ env('API_USERNAME') }}&token={{ env('API_PASSWORD') }}&uuid={{ $response_user['image_uuid'] }}" width="60px" height="60px" class="rounded-circle img-thumbnail">
+                            <div class="d-flex flex-row"> <img src="http://culick.com/fm/download?user_name={{ env('API_USERNAME_2') }}&token={{ env('API_PASSWORD') }}&uuid={{ $response_user['image_uuid'] }}" width="60px" height="60px" class="rounded-circle img-thumbnail">
                                 <div class="d-flex flex-column ms-2">
                                     <h6 class="mb-1 text-primary">{{ $response_user['name'] }}</h6>
                                     <p class="comment-text">{{ $data['comment'] }}</p>
