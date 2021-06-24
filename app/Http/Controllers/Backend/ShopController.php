@@ -76,7 +76,7 @@ class ShopController extends Controller
     public function enabled()
     {
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "offset" => 0,
             "page_size" => 30,
@@ -125,7 +125,7 @@ class ShopController extends Controller
     public function pending()
     {
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "offset" => 0,
             "page_size" => 30,
@@ -176,7 +176,7 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "creator_user_uuid" => $shop->creator_user_uuid,
             "currency" => 'MYR',
@@ -236,7 +236,7 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "creator_user_uuid" => $shop->creator_user_uuid
         ];
@@ -267,7 +267,7 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "store_uuid" => $shop->store_uuid,
             "order_status_array" => [
@@ -310,7 +310,7 @@ class ShopController extends Controller
         $shop = Shop::find($id);
 
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_2'),
             "token" => env('API_PASSWORD'),
             "store_uuid" => $shop->store_uuid
         ];
@@ -332,7 +332,7 @@ class ShopController extends Controller
     public function product_details($product_uuid)
     {
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_2'),
             "token" => env('API_PASSWORD'),
             "product_uuid" => $product_uuid
         ];
@@ -356,7 +356,7 @@ class ShopController extends Controller
     public function product_review($product_uuid)
     {
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_2'),
             "token" => env('API_PASSWORD'),
             "product_uuid" => $product_uuid
         ];
@@ -381,7 +381,7 @@ class ShopController extends Controller
         $shop = Shop::find($shop_id);
 
         $data = [
-            "user_name" => env('API_USERNAME'),
+            "user_name" => env('API_USERNAME_1'),
             "token" => env('API_PASSWORD'),
             "shop_uuid" => $shop->shop_uuid,
             "user_uuid" => $shop->creator_user_uuid,
