@@ -171,6 +171,7 @@
                 </div>
             </div>
             <!--/.col-->
+            @hasrole('merchant')
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
@@ -209,6 +210,7 @@
                     </div>
                 </div>
             </div>
+            @endhasrole
             <!--/.col-->
         </div>
         <!--/.row-->

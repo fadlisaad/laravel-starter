@@ -317,9 +317,13 @@ class UserController extends Controller
 
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
 
-        $shop_user = ShopUser::where('user_id', $id)->first();
-        $shop = $shop_user->shop;
-        $shop = json_decode($shop, true);
+        if($user->hasRole('merchant')){
+            $shop_user = ShopUser::where('user_id', $id)->first();
+            $shop = $shop_user->shop;
+            $shop = json_decode($shop, true);
+        } else {
+            $shop = NULL;
+        }
 
         return view("backend.$module_name.profile", compact('module_name', 'module_name_singular', "$module_name_singular", 'module_icon', 'module_action', 'module_title', 'userprofile', 'shop'));
     }
