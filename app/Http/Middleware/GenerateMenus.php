@@ -51,7 +51,7 @@ class GenerateMenus
             ])
             ->data([
                 'order'         => 11,
-                'permission'    => [],
+                'permission'    => ['view_shop'],
             ]);
 
             // Shop
@@ -62,7 +62,7 @@ class GenerateMenus
             ->data([
                 'order'         => 12,
                 'activematches' => 'admin/shop',
-                'permission'    => [],
+                'permission'    => ['view_shop'],
             ])
             ->link->attr([
                 'class' => 'c-sidebar-nav-link',
@@ -76,7 +76,7 @@ class GenerateMenus
             ->data([
                 'order'         => 13,
                 'activematches' => 'admin/shop/report*',
-                'permission'    => [],
+                'permission'    => ['view_shop'],
             ])
             ->link->attr([
                 'class' => 'c-sidebar-nav-link',

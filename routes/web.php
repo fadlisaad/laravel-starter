@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/mailable', function () {
+    $shop = App\Models\Shop::find(3);
+    return new App\Mail\WelcomeMessage($shop);
+});
+
 // Autho Routes
 require __DIR__.'/auth.php';
 
@@ -143,6 +148,9 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::resource("$module_name", "$controller_name");
     Route::patch("$module_name/{id}/block", ['as' => "$module_name.block", 'uses' => "$controller_name@block", 'middleware' => ['permission:block_users']]);
     Route::patch("$module_name/{id}/unblock", ['as' => "$module_name.unblock", 'uses' => "$controller_name@unblock", 'middleware' => ['permission:block_users']]);
+
+    Route::get("$module_name/profile/changeBankDetails/{id}", ['as' => "$module_name.changeBankDetails", 'uses' => "$controller_name@changeBankDetails"]);
+    Route::patch("$module_name/profile/changeBankDetails/{id}", ['as' => "$module_name.changeBankDetailsUpdate", 'uses' => "$controller_name@changeBankDetailsUpdate"]);
 
     /* Store route */
     Route::get("shop", ['as' => "store.index", 'uses' => 'ShopController@index']);

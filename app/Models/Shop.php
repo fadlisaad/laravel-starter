@@ -10,6 +10,8 @@ class Shop extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+
     protected $dates = [
         'request_time',
         'response_time'

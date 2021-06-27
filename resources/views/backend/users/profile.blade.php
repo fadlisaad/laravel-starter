@@ -36,76 +36,64 @@
         <!--/.row-->
 
         <div class="row mt-4 mb-4">
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.avatar') }}</th>
-                            <td><img src="{{asset($user->avatar)}}" class="user-profile-image img-fluid img-thumbnail" style="max-height:200px; max-width:200px;" /></td>
-                        </tr>
-
-                        <?php $fields_array = [
-                            [ 'name' => 'name' ],
-                            [ 'name' => 'email' ],
-                            [ 'name' => 'mobile' ],
-                            [ 'name' => 'gender' ],
-                            [ 'name' => 'date_of_birth', 'type' => 'date'],
-                            [ 'name' => 'url_website', 'type' => 'url' ],
-                            [ 'name' => 'url_facebook', 'type' => 'url' ],
-                            [ 'name' => 'url_twitter', 'type' => 'url' ],
-                            [ 'name' => 'url_linkedin', 'type' => 'url' ],
-                            [ 'name' => 'profile_privecy' ],
-                            [ 'name' => 'address' ],
-                            [ 'name' => 'bio' ],
-                            [ 'name' => 'login_count' ],
-                            [ 'name' => 'last_login', 'type' => 'datetime' ],
-                            [ 'name' => 'last_ip' ],
-                        ]; ?>
-                        @foreach ($fields_array as $field)
-                            <tr>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-user"></i>
+                        Personal Information
+                    </div>
+                    <div class="card-body">
+                        <img src="{{asset($user->avatar)}}" class="user-profile-image img-fluid img-thumbnail" style="max-height:200px; max-width:200px;" />
+                        <dl>
+                            <?php $fields_array = [
+                                [ 'name' => 'name' ],
+                                [ 'name' => 'email' ],
+                                [ 'name' => 'mobile' ],
+                                [ 'name' => 'gender' ],
+                                [ 'name' => 'date_of_birth', 'type' => 'date'],
+                                [ 'name' => 'profile_privecy' ],
+                                [ 'name' => 'address' ],
+                                [ 'name' => 'bio' ],
+                                [ 'name' => 'login_count' ],
+                                [ 'name' => 'last_login', 'type' => 'datetime' ],
+                                [ 'name' => 'last_ip' ],
+                            ]; ?>
+                            @foreach ($fields_array as $field)
                                 @php
                                 $field_name = $field['name'];
                                 $field_type = isset($field['type'])? $field['type'] : '';
                                 @endphp
 
-                                <th>{{ __("labels.backend.users.fields.".$field_name) }}</th>
+                                <dt>{{ __("labels.backend.users.fields.".$field_name) }}</dt>
 
                                 @if ($field_name == 'date_of_birth' && $userprofile->$field_name != '')
-                                <td>
+                                <dd>
                                     @if(auth()->user()->id == $userprofile->user_id)
                                     {{ $userprofile->$field_name->isoFormat('LL') }}
                                     @else
                                     {{ $userprofile->$field_name->format('jS \\of F') }}
                                     @endif
-                                </td>
+                                </dd>
                                 @elseif ($field_type == 'date' && $userprofile->$field_name != '')
-                                <td>
+                                <dd>
                                     {{ $userprofile->$field_name->isoFormat('LL') }}
-                                </td>
+                                </dd>
                                 @elseif ($field_type == 'datetime' && $userprofile->$field_name != '')
-                                <td>
+                                <dd>
                                     {{ $userprofile->$field_name->isoFormat('llll') }}
-                                </td>
-                                @elseif ($field_type == 'url')
-                                <td>
-                                    <a href="{{ $userprofile->$field_name }}" target="_blank">{{ $userprofile->$field_name }}</a>
-                                </td>
+                                </dd>
                                 @else
-                                <td>{{ $userprofile->$field_name }}</td>
+                                <dd>{{ $userprofile->$field_name }}</dd>
                                 @endif
-                            </tr>
-                        @endforeach
+                            @endforeach
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.password') }}</th>
-                            <td>
+                            <dt>{{ __('labels.backend.users.fields.password') }}</dt>
+                            <dd>
                                 <a href="{{ route('backend.users.changeProfilePassword', $user->id) }}" class="btn btn-outline-primary btn-sm">Change password</a>
-                            </td>
-                        </tr>
+                            </dd>
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.social') }}</th>
-                            <td>
+                            <dt>{{ __('labels.backend.users.fields.social') }}</dt>
+                            <dd>
                                 <ul class="list-unstyled">
                                     @foreach ($user->providers as $provider)
                                     <li>
@@ -113,21 +101,16 @@
                                     </li>
                                     @endforeach
                                 </ul>
-                            </td>
-                        </tr>
+                            </dd>
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.status') }}</th>
-                            <td>{!! $user->status_label !!}</td>
-                        </tr>
+                            <dt>{{ __('labels.backend.users.fields.status') }}</dt>
+                            <dd>{!! $user->status_label !!}</dd>
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.confirmed') }}</th>
-                            <td>{!! $user->confirmed_label !!}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.roles') }}</th>
-                            <td>
+                            <dt>{{ __('labels.backend.users.fields.confirmed') }}</dt>
+                            <dd>{!! $user->confirmed_label !!}</dd>
+
+                            <dt>{{ __('labels.backend.users.fields.roles') }}</dt>
+                            <dd>
                                 @if($user->roles()->count() > 0)
                                     <ul>
                                         @foreach ($user->roles() as $role)
@@ -135,12 +118,10 @@
                                         @endforeach
                                     </ul>
                                 @endif
-                            </td>
+                                </dd>
 
-                        </tr>
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.permissions') }}</th>
-                            <td>
+                            <dt>{{ __('labels.backend.users.fields.permissions') }}</dt>
+                            <dd>
                                 @if($user->permissions()->count() > 0)
                                     <ul>
                                         @foreach ($user->permissions() as $permission)
@@ -148,21 +129,85 @@
                                         @endforeach
                                     </ul>
                                 @endif
-                            </td>
-                        </tr>
+                                </dd>
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.created_at') }}</th>
-                            <td>{{ $user->created_at->isoFormat('llll') }}<br><small>({{ $user->created_at->diffForHumans() }})</small></td>
-                        </tr>
+                            <dt>{{ __('labels.backend.users.fields.created_at') }}</dt>
+                            <dd>{{ $user->created_at->isoFormat('llll') }}<br><small>({{ $user->created_at->diffForHumans() }})</small></dd>
 
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.updated_at') }}</th>
-                            <td>{{ $user->updated_at->isoFormat('llll') }}<br/><small>({{ $user->updated_at->diffForHumans() }})</small></td>
-                        </tr>
+                            <dt>{{ __('labels.backend.users.fields.updated_at') }}</dt>
+                            <dd>{{ $user->updated_at->isoFormat('llll') }}<br/><small>({{ $user->updated_at->diffForHumans() }})</small></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-dollar-sign"></i>
+                        Bank Account Details
+                    </div>
+                    <div class="card-body">
+                        <?php $bank_array = [
+                            [ 'name' => 'bank_name' ],
+                            [ 'name' => 'bank_account_name' ],
+                            [ 'name' => 'bank_account_number' ]
+                        ]; ?>
+                        <dl>
+                        @foreach ($bank_array as $field)
+                            @php
+                            $field_name = $field['name'];
+                            $field_type = isset($field['type'])? $field['type'] : '';
+                            @endphp
 
-                    </table>
-                </div><!--table-responsive-->
+                            <dt>{{ __("labels.backend.users.fields.".$field_name) }}</dt>
+                            <dd>{{ $userprofile->$field_name ?? 'N/A' }}</dd>
+                        @endforeach
+                        </dl>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('backend.users.changeBankDetails', $user->id) }}" class="btn btn-primary btn-sm">Update Bank Details</a>
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-cube"></i>
+                        Shop Information
+                    </div>
+                    <div class="card-body">
+                        <dl>
+                            <dt>Store Name</dt>
+                            <dd>{{ $shop[0]['store_name'] }}</dd>
+                            <dt>Store Address</dt>
+                            <dd>{{ $shop[0]['address'] }}</dd>
+                            <dt>Store Description</dt>
+                            <dd>{{ $shop[0]['description'] }}</dd>
+                            <?php $shop_array = [
+                                [ 'name' => 'url_website', 'type' => 'url' ],
+                                [ 'name' => 'url_facebook', 'type' => 'url' ],
+                                [ 'name' => 'url_twitter', 'type' => 'url' ],
+                                [ 'name' => 'url_linkedin', 'type' => 'url' ]
+                            ]; ?>
+                            @foreach ($shop_array as $field)
+                                @php
+                                $field_name = $field['name'];
+                                $field_type = isset($field['type'])? $field['type'] : '';
+                                @endphp
+
+                                <dt>{{ __("labels.backend.users.fields.".$field_name) }}</dt>
+                                <dd>
+                                    <a href="{{ $userprofile->$field_name }}" target="_blank">{{ $userprofile->$field_name }}</a>
+                                </dd>
+                            @endforeach
+                        </dl>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('backend.store.show', $shop[0]['id']) }}" class="btn btn-primary btn-sm">View Shop Details</a>
+                    </div>
+                </div>
             </div>
             <!--/.col-->
         </div>

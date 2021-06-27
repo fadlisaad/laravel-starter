@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Log;
 use Yajra\DataTables\DataTables;
+use App\Models\ShopUser;
+use App\Models\Shop;
 
 class UserController extends Controller
 {
@@ -315,7 +317,11 @@ class UserController extends Controller
 
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
 
-        return view("backend.$module_name.profile", compact('module_name', 'module_name_singular', "$module_name_singular", 'module_icon', 'module_action', 'module_title', 'userprofile'));
+        $shop_user = ShopUser::where('user_id', $id)->first();
+        $shop = $shop_user->shop;
+        $shop = json_decode($shop, true);
+
+        return view("backend.$module_name.profile", compact('module_name', 'module_name_singular', "$module_name_singular", 'module_icon', 'module_action', 'module_title', 'userprofile', 'shop'));
     }
 
     /**
@@ -471,6 +477,48 @@ class UserController extends Controller
         $$module_name_singular->update($request_data);
 
         Flash::success(icon()." '".Str::singular($module_title)."' Updated Successfully")->important();
+
+        return redirect("admin/$module_name/profile/$id");
+    }
+
+    public function changeBankDetails($id)
+    {
+        if (!auth()->user()->can('edit_users')) {
+            $id = auth()->user()->id;
+        }
+
+        $title = $this->module_title;
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_name_singular = Str::singular($this->module_name);
+        $module_icon = $this->module_icon;
+        $module_action = 'Edit Bank Details';
+
+        $user_profile = Userprofile::where('user_id', '=', $id)->first();
+
+        return view("backend.$module_name.changeBankDetails", compact('module_name', 'module_title', 'user_profile', 'module_icon', 'module_action'));
+    }
+
+    public function changeBankDetailsUpdate(Request $request, $id)
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        if (!auth()->user()->can('edit_users')) {
+            $id = auth()->user()->id;
+        }
+
+        $request_data = $request->only('bank_name', 'bank_account_name', 'bank_account_number');
+
+        $user_profile = Userprofile::where('user_id', '=', $id)->first();
+        $user_profile->update($request_data);
+        event(new UserProfileUpdated($user_profile));
+
+        Flash::success(icon()." Bank Details Updated Successfully")->important();
 
         return redirect("admin/$module_name/profile/$id");
     }

@@ -74,7 +74,7 @@ return [
                 'url_twitter'           => 'Twitter',
                 'url_googleplus'        => 'Google Plus',
                 'url_linkedin'          => 'LinkedIn',
-                'profile_privecy'       => 'Profile Privecy',
+                'profile_privecy'       => 'Profile Privacy',
                 'address'               => 'Address',
                 'bio'                   => 'Bio',
                 'login_count'           => 'Login Count',
@@ -92,6 +92,9 @@ return [
                 'status'                => 'Status',
                 'created_at'            => 'Created At',
                 'updated_at'            => 'Updated At',
+                'bank_name'            => 'Bank Name',
+                'bank_account_name'            => 'Account Name',
+                'bank_account_number'            => 'Account Number',
             ],
 
         ],

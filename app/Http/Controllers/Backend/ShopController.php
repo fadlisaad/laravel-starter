@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Shop;
+use App\Models\ShopUser;
 use App\Models\Sale;
+use App\Models\User;
 use Log;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use App\Mail\WelcomeMessage;
+use Illuminate\Support\Facades\Mail;
 
 class ShopController extends Controller
 {
@@ -20,7 +24,15 @@ class ShopController extends Controller
 
     public function index_data()
     {
-        $shop = Shop::orderBy('id', 'desc')->get();
+        $user_id = auth()->user()->id;
+        $user = User::find($user_id);
+        if($user->hasRole('merchant')){
+            $shop_user = ShopUser::where('user_id', $user_id)->first();
+            $shop = Shop::where('id', $shop_user->shop_id)->orderBy('id', 'desc')->get();
+        } else {
+            $shop = Shop::orderBy('id', 'desc')->get();
+        }
+        
         return Datatables::of($shop)
             ->addColumn('action', function ($data) {
                 return view('backend.includes.shop_actions', compact('data'));
@@ -44,7 +56,14 @@ class ShopController extends Controller
 
     public function index_sales_data()
     {
-        $sales = Sale::all();
+        $user_id = auth()->user()->id;
+        $user = User::find($user_id);
+        if($user->hasRole('merchant')){
+            $shop_user = ShopUser::where('user_id', $user_id)->first();
+            $sales = Sale::where('shop_id', $shop_user->shop_id)->get();
+        } else {
+            $sales = Sale::all();
+        }
   
         return Datatables::of($sales)
             ->editColumn('shop_name', function ($data) {
@@ -222,6 +241,7 @@ class ShopController extends Controller
         if($response['result'] == 'ok')
         {
             $flash = 'Shop '. $shop->store_name.' has been approved.';
+            Mail::to($shop->email)->send(new WelcomeMessage($shop));
 
         } else {
             $flash = $response['error_desc'];

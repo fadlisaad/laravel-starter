@@ -84,7 +84,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
-                                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="{{ __('E-Mail Address') }}" aria-label="email" aria-describedby="email" required>
+                                    <input type="email" class="form-control" id="email" name="email" value="{{ $email ?? old('email') }}" placeholder="{{ __('E-Mail Address') }}" aria-label="email" aria-describedby="email" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -109,7 +109,7 @@
                                     <div class="custom-control custom-control-alternative custom-checkbox">
                                         <input class="custom-control-input" id="customCheckRegister" type="checkbox">
                                         <label class="custom-control-label" for="customCheckRegister">
-                                            <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
+                                            <span class="text-muted">I agree with the <a href="https://cartsitu.com/privacy-policy.html" target="_blank">Privacy Policy</a></span>
                                         </label>
                                     </div>
                                 </div>
